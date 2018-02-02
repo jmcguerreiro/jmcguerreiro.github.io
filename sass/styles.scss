@@ -1,0 +1,166 @@
+@import "framework/_imports";
+@font-face 							{ font-family: 'Metropolis'; src: url('../assets/fonts/Metropolis-Light.woff2') format('woff2'), url('../assets/fonts/Metropolis-Light.woff') format('woff'); font-weight: 100; }
+@font-face 							{ font-family: 'Metropolis'; src: url('../assets/fonts/Metropolis-Black.woff2') format('woff2'), url('../assets/fonts/Metropolis-Black.woff') format('woff'); font-weight: 900; }
+
+$breakpoints: 						(mobile-landscape: 480px, phablet: 600px, tablet: 768px, laptop: 1024px, desktop: 1280px, desktop-large: 1440px, desktop-x-large: 1920px);
+$spacing: 							12px;
+
+$color-black: 						#000;
+$color-white: 						#fff;
+$color-grey-light: 					#999;
+$color-grey-medium: 				#666;
+$color-yellow: 						#f2c593;
+
+$font-family-primary: 				"Metropolis", sans-serif;
+$typi: 								(null: (12px, 1.33), phablet: (14px, 1.33),	desktop: (16px, 1.5));
+$font-size-x-small: 		  		(null: (10px, 1.33), phablet: (11px, 1.33),	desktop: (12px, 1.5));
+$font-size-small:        			(null: (11px, 1.33), phablet: (12px, 1.33),	desktop: (14px, 1.5));
+$font-size-normal:       			(null: (12px, 1.33), phablet: (14px, 1.33),	desktop: (16px, 1.5));
+$font-size-large:        			(null: (16px, 1.33), phablet: (18px, 1.33),	desktop: (18px, 1.5));
+$font-size-x-large:      			(null: (20px, 1.20), phablet: (22px, 1.20),	desktop: (24px, 1.2));
+$font-size-xx-large:     			(null: (24px, 1.20), phablet: (28px, 1.20),	desktop: (32px, 1.2));
+$font-size-xxx-large: 	  			(null: (30px, 1.20), phablet: (36px, 1.20),	desktop: (42px, 1.2));
+$font-size-ultra-large:  			(null: (48px, 1.20), phablet: (56px, 1.20),	desktop: (64px, 1.2));
+$font-size-ultra-x-large:  			(null: (56px, 1.20), phablet: (64px, 1.20),	desktop: (72px, 1.2));
+
+$font-weight-thin:              	100;
+$font-weight-light:             	200;
+$font-weight-book:              	300;
+$font-weight-regular:           	400;
+$font-weight-bold:              	700;
+$font-weight-heavy:             	900;
+
+$letter-spacing-large: 				5px;
+$letter-spacing-x-large: 			10px;
+
+$transition-fast: 					0.25s;
+
+
+/*----------------------------------------------------------*/
+
+
+
+//== GLOBAL
+html 														{ @include typi-base(); }
+html, body 													{ height: 100%; }
+body 														{ background: $color-black; color: $color-grey-light; font-family: $font-family-primary; font-weight: $font-weight-thin; line-height: 1.5; }
+
+.site 														{ display: flex; align-items: flex-end; justify-content: flex-start; }
+
+a 															{ text-decoration: none; }
+
+
+//== POSITION: BACKGROUND
+.background 												{ position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: -1; animation: backgroundBlur 8s alternate linear infinite; transform: scale(0.33) translateZ(0); }
+.background__media 											{ position: absolute; top: 50%; left: 50%; height: auto; width: auto; object-fit: cover; position: fixed; min-width: 100%; min-height: 100%; z-index: -100; transform: translateX(-50%) translateY(-50%); }
+
+@keyframes backgroundBlur 									{
+	0% 														{ -webkit-filter: blur(5px);}
+	50% 													{ -webkit-filter: blur(0px);}
+	100% 													{ -webkit-filter: blur(5px);}
+}
+
+@include breakpoint(phablet) 								{
+	.background 											{ transform: scale(0.5) translateZ(0); }
+}
+
+@include breakpoint(laptop) 								{
+	.background 											{ transform: scale(0.75) translateZ(0); }
+}
+
+
+//== POSITION: HEADER
+.header 													{ position: absolute; top: 0; left: 0; width: 100%; padding: $spacing*3; }
+.header__branding 											{ text-transform: uppercase; font-weight: $font-weight-heavy; color: $color-white; letter-spacing: $letter-spacing-x-large; text-align: center;  }
+.header__social 											{ position: fixed; left: $spacing; top: 50%; transform: translateY(-50%); }
+
+@include breakpoint(phablet) 								{
+	.header__social 										{ left: $spacing*2; }
+}
+
+
+//== POSITION: PLAY
+.play 														{ position: absolute; top: 50vh; left: 50%; transform: translateX(-50%) translateY(-50%); }
+
+.play__button__icon__wrapper 								{ height: 60px; width: 60px; border-radius: 100%; display: flex; align-items: center; justify-content: center; border: solid 3px $color-grey-medium; margin: 0 auto $spacing auto; position: relative; transition: $transition-fast;
+	&::after 												{ content: ''; border: 1px solid; border-color: $color-yellow; width: 150%; height: 150%; border-radius: 60px; position: absolute; left: -25%; top: -25%; opacity: 1; animation: 1s playButton linear infinite; }
+}
+
+.play__button__icon 										{ fill: $color-yellow; height: 18px; width: 18px; margin-left: 3px; }
+.play__button__text 										{ display: none; }
+
+@keyframes playButton 										{
+  	0% 														{ transform: scale(0.68); }
+	100% 													{ transform: scale(1.2); opacity: 0; }
+}
+
+@include breakpoint(desktop) 								{
+	.play__button											{ display: flex; align-items: center; transition: $transition-fast; transform: translateX(100%);
+		&:hover 											{
+			.play__button__icon__wrapper					{ transform: scale(0.9); }
+			.play__button__text 							{ color: $color-white; }
+		}
+	}
+	.play__button__text 									{ display: block; margin-left: $spacing; color: $color-grey-light; transition: $transition-fast; }
+}
+
+
+//== POSITION: SERVICES
+.services 													{ margin-top: 100vh; width: 100%; padding: $spacing*3 $spacing*2; overflow: auto; -webkit-overflow-scrolling: touch;
+	&::after 												{ content: ""; height: 114px; width: 48px; background: linear-gradient(to right, rgba($color-black, 0), $color-black); display: block; position: fixed; bottom: 0; right: 0; }
+}
+
+@include breakpoint(laptop) 								{
+	.services 												{ position: fixed; bottom: 0; left: 0; padding: $spacing*4 $spacing*2; display: flex; justify-content: center; overflow: hidden; }
+}
+
+
+//== POSITION: COPYRIGHT
+.copyright 													{ position: fixed; right: $spacing; top: 50%; display: flex; align-items: center; transform: translateY(-50%); }
+.copyright__notice 											{  @include typi($font-size-x-small); text-transform: uppercase; color: $color-grey-medium; letter-spacing: $letter-spacing-large; writing-mode: vertical-lr; transform: rotate(180deg); }
+
+
+@include breakpoint(phablet) 								{
+	.copyright 												{ right: $spacing*2; }
+}
+
+
+
+/*----------------------------------------------------------*/
+
+
+
+//== PATTERN: LINK INHERIT
+.p-link--inherit 											{ color: inherit; transition: $transition-fast;
+	&:hover 												{ color: $color-yellow; }
+}
+
+
+//== PATTERN: LIST SOCIAL
+.p-list--social 											{ @extend %list-reset; writing-mode: vertical-lr; text-align: center; transform: rotate(180deg);
+	.p-list__item 											{ display: inline+-block; margin-bottom: $spacing*2;
+		&:last-child 										{ margin-bottom: 0; }
+	}
+	.p-list__item__link 									{ @include typi($font-size-small); text-transform: uppercase; font-weight: $font-weight-heavy; color: $color-grey-medium; letter-spacing: $letter-spacing-large; padding-left: $spacing; border-left: solid 3px $color-yellow; transition: $transition-fast;
+		&:hover 											{ color: $color-white; }
+	}
+}
+
+
+//== PATTERN: LIST SERVICES
+.p-list--services 											{ @extend %list-reset; text-align: center;
+	.p-list__item 											{ display: block; margin-bottom: $spacing; padding-bottom: $spacing; }
+	.p-list__item__link 									{ @include typi($font-size-small); text-transform: uppercase; color: $color-yellow; letter-spacing: $letter-spacing-large; border-bottom: solid 2px transparent; padding-bottom: $spacing;
+		&--soon 											{ color: $color-grey-medium; text-decoration: line-through; pointer-events: none; }
+	}
+
+	@include breakpoint(laptop) 							{ display: flex;
+		.p-list__item 										{ flex-shrink: 1; flex-shrink: 0; margin-right: $spacing*2; margin-bottom: 0; padding-bottom: 0;
+			&:last-child 									{ margin-right: 0; }
+		}
+
+		.p-list__item__link									{ transition: $transition-fast;
+			&:hover 										{ color: $color-white; border-bottom-color: $color-yellow; }
+		}
+	}
+}
